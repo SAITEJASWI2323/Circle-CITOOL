@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  hello-job:
+  workspace-job:
     docker:
       - image: cimg/base:stable
 
@@ -9,11 +9,22 @@ jobs:
       - checkout
 
       - run:
-          name: Print Message
-          command: echo "Hello CircleCI"
+          name: Create File
+          command: |
+            echo "This file is created inside CircleCI workspace" > sample.txt
+
+      - run:
+          name: Show File Content
+          command: |
+            echo "Displaying file:"
+            cat sample.txt
+
+      - run:
+          name: List Workspace Files
+          command: ls -la
 
 workflows:
   version: 2
-  hello-workflow:
+  workspace-workflow:
     jobs:
-      - hello-job
+      - workspace-job
