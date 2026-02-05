@@ -1,27 +1,39 @@
 version: 2.1
 
 jobs:
-  java-build:
+  checkout-stage:
     docker:
-      - image: cimg/openjdk:17.0
-
+      - image: cimg/base:stable
     steps:
       - checkout
+      - run: echo "Checkout completed"
 
+  build-stage:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
       - run:
           name: Compile Java
           command: javac Hello.java
 
+  test-stage:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
       - run:
-          name: Run Java
+          name: Run Java Program
           command: java Hello
-
-      - store_artifacts:
-          path: Hello.class
-          destination: compiled-class
 
 workflows:
   version: 2
-  java-workflow:
+  pipeline-workflow:
     jobs:
-      - java-build
+      - checkout-stage
+      - build-stage:
+          requires:
+            - checkout-stage
+      - test-stage:
+          requires:
+            - build-stage
