@@ -1,0 +1,22 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/base:stable
+
+    steps:
+      - checkout
+
+      - run:
+          name: Show workspace files
+          command: |
+            echo "Listing files in workspace"
+            ls -la
+            pwd
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
