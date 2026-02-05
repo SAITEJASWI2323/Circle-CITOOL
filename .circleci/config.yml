@@ -1,35 +1,29 @@
 version: 2.1
 
 jobs:
-  post-job:
+  job-A:
     docker:
-      - image: cimg/openjdk:17.0
-
+      - image: cimg/base:stable
     steps:
       - checkout
-
       - run:
-          name: Compile Java
-          command: javac Hello.java
+          name: Execute Job A
+          command: echo "This is Job A"
 
+  job-B:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
       - run:
-          name: Run Java
-          command: java Hello
-
-      # Success Message
-      - run:
-          name: Success Message
-          command: echo "BUILD SUCCESSFUL"
-          when: on_success
-
-      # Failure Message
-      - run:
-          name: Failure Message
-          command: echo "BUILD FAILED"
-          when: on_fail
+          name: Execute Job B
+          command: echo "This is Job B"
 
 workflows:
   version: 2
-  post-workflow:
+  chain-workflow:
     jobs:
-      - post-job
+      - job-A
+      - job-B:
+          requires:
+            - job-A
