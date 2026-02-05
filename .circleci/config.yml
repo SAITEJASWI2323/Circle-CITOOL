@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  hello-job:
     docker:
       - image: cimg/base:stable
 
@@ -9,14 +9,11 @@ jobs:
       - checkout
 
       - run:
-          name: Show workspace files
-          command: |
-            echo "Listing files in workspace"
-            ls -la
-            pwd
+          name: Print Message
+          command: echo "Hello CircleCI"
 
 workflows:
   version: 2
-  build_and_test:
+  hello-workflow:
     jobs:
-      - build
+      - hello-job
