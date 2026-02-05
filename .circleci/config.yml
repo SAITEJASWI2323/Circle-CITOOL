@@ -7,7 +7,7 @@ jobs:
 
     steps:
       - checkout
-
+      
       - run:
           name: Compile Java
           command: javac Hello.java
