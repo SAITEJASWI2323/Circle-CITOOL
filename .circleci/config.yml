@@ -6,22 +6,31 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - run: echo "Checkout completed"
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
   build-stage:
     docker:
       - image: cimg/openjdk:17.0
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - run:
           name: Compile Java
           command: javac Hello.java
+      - persist_to_workspace:
+          root: .
+          paths:
+            - Hello.class
 
   test-stage:
     docker:
       - image: cimg/openjdk:17.0
     steps:
-      - checkout
+      - attach_workspace:
+          at: .
       - run:
           name: Run Java Program
           command: java Hello
