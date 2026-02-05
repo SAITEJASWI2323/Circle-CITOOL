@@ -1,7 +1,12 @@
 version: 2.1
 
+parameters:
+  username:
+    type: string
+    default: "Student"
+
 jobs:
-  workspace-job:
+  param-job:
     docker:
       - image: cimg/base:stable
 
@@ -9,22 +14,11 @@ jobs:
       - checkout
 
       - run:
-          name: Create File
-          command: |
-            echo "This file is created inside CircleCI workspace" > sample.txt
-
-      - run:
-          name: Show File Content
-          command: |
-            echo "Displaying file:"
-            cat sample.txt
-
-      - run:
-          name: List Workspace Files
-          command: ls -la
+          name: Print Parameter
+          command: echo "Hello Tejaswi"
 
 workflows:
   version: 2
-  workspace-workflow:
+  param-workflow:
     jobs:
-      - workspace-job
+      - param-job
