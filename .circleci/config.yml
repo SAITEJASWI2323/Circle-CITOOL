@@ -1,29 +1,3 @@
-version: 2.1
-
-jobs:
-  job-A:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: Execute Job A
-          command: echo "This is Job A"
-
-  job-B:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: Execute Job B
-          command: echo "This is Job B"
-
-workflows:
-  version: 2
-  chain-workflow:
-    jobs:
-      - job-A
-      - job-B:
-          requires:
-            - job-A
+- run:
+          name: Cleanup Workspace
+          command: ls
