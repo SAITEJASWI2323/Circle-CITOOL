@@ -7,7 +7,7 @@ jobs:
 
     steps:
       - checkout
-      
+
       - run:
           name: Compile Java
           command: javac Hello.java
@@ -15,6 +15,10 @@ jobs:
       - run:
           name: Run Java
           command: java Hello
+
+      - store_artifacts:
+          path: Hello.class
+          destination: compiled-class
 
 workflows:
   version: 2
