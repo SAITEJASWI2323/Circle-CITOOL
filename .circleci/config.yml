@@ -1,48 +1,35 @@
 version: 2.1
 
 jobs:
-  checkout-stage:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-
-  build-stage:
+  post-job:
     docker:
       - image: cimg/openjdk:17.0
+
     steps:
-      - attach_workspace:
-          at: .
+      - checkout
+
       - run:
           name: Compile Java
           command: javac Hello.java
-      - persist_to_workspace:
-          root: .
-          paths:
-            - Hello.class
 
-  test-stage:
-    docker:
-      - image: cimg/openjdk:17.0
-    steps:
-      - attach_workspace:
-          at: .
       - run:
-          name: Run Java Program
+          name: Run Java
           command: java Hello
+
+      # Success Message
+      - run:
+          name: Success Message
+          command: echo "BUILD SUCCESSFUL"
+          when: on_success
+
+      # Failure Message
+      - run:
+          name: Failure Message
+          command: echo "BUILD FAILED"
+          when: on_fail
 
 workflows:
   version: 2
-  pipeline-workflow:
+  post-workflow:
     jobs:
-      - checkout-stage
-      - build-stage:
-          requires:
-            - checkout-stage
-      - test-stage:
-          requires:
-            - build-stage
+      - post-job
